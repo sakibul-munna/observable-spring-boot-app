@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>observable-spring-boot-app</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>Observable Spring Boot App</name>
 	<description>A well instrumented spring boot application that is ready to produce metrics, traces and logs and storing those data into popular observability backends. OpenTelemetry is playing the vital role as a middleman. However, you can get to know what is going inside using a visualization front-end i.e. Grafana.</description>
 	<properties>

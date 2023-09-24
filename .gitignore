@@ -23,3 +23,7 @@ mvnw.cmd
 # Dependencies
 ## For Maven
 repository/
+
+### JAR Files ###
+*.jar
+
