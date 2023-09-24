@@ -13,9 +13,14 @@
 	<version>0.0.1</version>
 	<name>Observable Spring Boot App</name>
 	<description>A well instrumented spring boot application that is ready to produce metrics, traces and logs and storing those data into popular observability backends. OpenTelemetry is playing the vital role as a middleman. However, you can get to know what is going inside using a visualization front-end i.e. Grafana.</description>
+
 	<properties>
 		<java.version>17</java.version>
+		<maven.compiler.release>17</maven.compiler.release>
+		<otel.traces.api.version>0.13.1</otel.traces.api.version>
+		<otel.metrics.api.version>1.10.0-alpha-rc.1</otel.metrics.api.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -25,7 +30,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -36,6 +40,32 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
+			<version>1.30.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry.instrumentation</groupId>
+			<artifactId>opentelemetry-instrumentation-annotations</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api-trace</artifactId>
+			<version>${otel.traces.api.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api-metrics</artifactId>
+			<version>${otel.metrics.api.version}</version>
 		</dependency>
 	</dependencies>
 
