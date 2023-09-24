@@ -27,3 +27,5 @@ repository/
 ### JAR Files ###
 *.jar
 
+##Tempo Files
+tempo-data
