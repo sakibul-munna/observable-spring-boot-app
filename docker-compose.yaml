@@ -9,9 +9,48 @@ services:
     volumes:
       - ./collector-config.yaml:/etc/collector-config.yaml
       - ./observable-spring-boot-app.log:/var/log/observable-spring-boot-app.log
+    depends_on:
+      tempo:
+        condition: service_healthy
+      prometheus:
+        condition: service_healthy
     ports:
       - "5555:5555"
       - "6666:6666"
+
+  tempo:
+    image: grafana/tempo:2.2.3
+    command: [ "-config.file=/etc/tempo.yaml" ]
+    container_name: tempo
+    hostname: tempo
+    volumes:
+      - ./observability-configuration/tempo/tempo-config.yaml:/etc/tempo.yaml
+      - ./observability-configuration/tempo/tempo-overrides.yaml:/etc/overrides.yaml
+      - ./tempo-data:/tmp/tempo
+    ports:
+      - "3200:3200"
+      - "4317:4317"  # otlp grpc
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: wget --no-verbose --tries=1 --spider http://localhost:3200/status || exit 1
+
+  prometheus:
+    image: prom/prometheus:v2.47.0
+    container_name: prometheus
+    hostname: prometheus
+    command:
+      - --config.file=/etc/prometheus.yaml
+      - --web.enable-remote-write-receiver
+      - --enable-feature=exemplar-storage
+    volumes:
+      - ./observability-configuration/prometheus/prometheus.yaml:/etc/prometheus.yaml
+    ports:
+      - "9090:9090"
+    healthcheck:
+      interval: 5s
+      retries: 10
+      test: wget --no-verbose --tries=1 --spider http://localhost:9090/status || exit 1
 
 networks:
   default:
