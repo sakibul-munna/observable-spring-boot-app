@@ -1,5 +1,6 @@
 package com.example.observablespringbootapp.demo;
 
+import com.example.observablespringbootapp.observability.CustomMetricsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +15,13 @@ public class DemoController {
 
     @Autowired
     private DemoService demoService;
+    @Autowired
+    private CustomMetricsService customMetricsService;
 
     @GetMapping
-    public DemoResponse sayHello(){
+    public DemoResponse sayHello() {
         log.info("Here inside controller");
+        customMetricsService.updateNumberOfExecution();
         return demoService.buildResponseForSayHello();
     }
 }
