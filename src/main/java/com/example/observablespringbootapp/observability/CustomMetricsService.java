@@ -43,4 +43,18 @@ public class CustomMetricsService {
                             r.record(getRuntime().totalMemory() - getRuntime().freeMemory());
                         });
     }
+
+    /**
+     * This function shows the manual way to create custom span.
+     */
+    public void updateNumberOfExecution() {
+        // Creating a custom span
+        Span span = tracer.spanBuilder("numOfExecCustomSpan").startSpan();
+        try (Scope scope = span.makeCurrent()) {
+            // Update the synchronous metric
+            numberOfExecutions.add(1);
+        } finally {
+            span.end();
+        }
+    }
 }
