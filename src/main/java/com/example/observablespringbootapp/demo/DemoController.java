@@ -10,12 +10,14 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/api/v1/demo")
 public class DemoController {
+    private static final Logger log = LoggerFactory.getLogger(DemoController.class);
 
     @Autowired
     private DemoService demoService;
 
     @GetMapping
     public DemoResponse sayHello(){
+        log.info("Here inside controller");
         return demoService.buildResponseForSayHello();
     }
 }
