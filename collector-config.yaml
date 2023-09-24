@@ -4,15 +4,29 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:5555
 
+processors:
+  batch:
+    timeout: 1s
+    send_batch_size: 1024
+
 exporters:
   logging:
     loglevel: debug
+  otlp:
+    endpoint: tempo:4317
+    tls:
+      insecure: true
+  prometheus:
+    endpoint: collector:6666
+    namespace: default
 
 service:
   pipelines:
     metrics:
-      receivers: [otlp]
-      exporters: [logging]
+      receivers: [ otlp ]
+      processors: [ batch ]
+      exporters: [ prometheus ]
     traces:
-      receivers: [otlp]
-      exporters: [logging]
+      receivers: [ otlp ]
+      processors: [ batch ]
+      exporters: [ otlp ]
