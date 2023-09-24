@@ -5,7 +5,7 @@ datasources:
   type: prometheus
   access: proxy
   orgId: 1
-  url: http://prometheus:9090
+  url: http://prometheus:9090 # Use the service name defined in your Docker Compose file
   basicAuth: false
   isDefault: false
   version: 1
@@ -14,10 +14,20 @@ datasources:
   type: tempo
   access: proxy
   orgId: 1
-  url: http://tempo:3200
+  url: http://tempo:3200 # Use the service name defined in your Docker Compose file
   basicAuth: false
   isDefault: true
   version: 1
   editable: false
   apiVersion: 1
   uid: tempo
+- name: Loki
+  type: loki
+  access: proxy
+  url: http://loki:3100   # Use the service name defined in your Docker Compose file
+  jsonData:
+    maxLines: 1000        # Setting the maximum number of log lines to retrieve
+    minTimeRange: null    # Setting the minimum time range
+  secureJsonFields: {}
+  version: 1
+  editable: true
