@@ -3,8 +3,15 @@ receivers:
     protocols:
       grpc:
         endpoint: 0.0.0.0:5555
+  filelog:
+    include: [ "/var/log/observable-spring-boot-app.log" ]
 
 processors:
+  attributes:
+    actions:
+      - action: insert
+        key: loki.attribute.labels
+        value: log.file.name
   batch:
     timeout: 1s
     send_batch_size: 1024
@@ -19,6 +26,8 @@ exporters:
   prometheus:
     endpoint: collector:6666
     namespace: default
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
 
 service:
   pipelines:
@@ -30,3 +39,10 @@ service:
       receivers: [ otlp ]
       processors: [ batch ]
       exporters: [ otlp ]
+    logs:
+      receivers: [ filelog ]
+      processors: [ attributes ]
+      exporters: [ loki ]
+  telemetry:
+    logs:
+      level: debug
