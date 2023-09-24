@@ -1,0 +1,18 @@
+version: '3.0'
+
+services:
+  collector:
+    image: otel/opentelemetry-collector-contrib:0.85.0
+    container_name: collector
+    hostname: collector
+    command: [ "--config=/etc/collector-config.yaml" ]
+    volumes:
+      - ./collector-config.yaml:/etc/collector-config.yaml
+      - ./observable-spring-boot-app.log:/var/log/observable-spring-boot-app.log
+    ports:
+      - "5555:5555"
+      - "6666:6666"
+
+networks:
+  default:
+    name: observable-spring-boot-app
