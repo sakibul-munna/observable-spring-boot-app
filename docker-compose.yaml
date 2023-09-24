@@ -17,6 +17,8 @@ services:
     ports:
       - "5555:5555"
       - "6666:6666"
+    networks:
+      - loki
 
   tempo:
     image: grafana/tempo:2.2.3
@@ -34,6 +36,8 @@ services:
       interval: 5s
       retries: 10
       test: wget --no-verbose --tries=1 --spider http://localhost:3200/status || exit 1
+    networks:
+      - loki
 
   prometheus:
     image: prom/prometheus:v2.47.0
@@ -51,6 +55,16 @@ services:
       interval: 5s
       retries: 10
       test: wget --no-verbose --tries=1 --spider http://localhost:9090/status || exit 1
+    networks:
+      - loki
+
+  loki:
+    image: grafana/loki:2.9.1
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - loki
 
   grafana:
     image: grafana/grafana:10.1.2
@@ -74,7 +88,10 @@ services:
       interval: 5s
       retries: 10
       test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+    networks:
+      - loki
 
 networks:
   default:
     name: observable-spring-boot-app
+  loki:
